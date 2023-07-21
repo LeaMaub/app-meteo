@@ -1,15 +1,24 @@
 import React, { Component } from 'react'
 import style from '../Style.js'
-import {TextInput, View, TouchableOpacity, Text } from 'react-native'
+import {TextInput, View, TouchableOpacity, Text, ImageBackground } from 'react-native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import List from './List.js'
 
+const images = [
+    require('../assets/meteo1.jpg'),
+    require('../assets/meteo2.jpg'),
+    require('../assets/meteo3.jpg'),
+    require('../assets/meteo4.jpg'),
+    require('../assets/meteo5.jpg'),
+    require('../assets/meteo6.jpg')
+];
 class Search extends Component {
 
     constructor (props) {
         super(props)
         this.state = {
-            city: 'Montpellier'
+            city: 'Montpellier',
+            backgroundImage: this.getRandomImage()
         }
     }
 
@@ -21,12 +30,23 @@ class Search extends Component {
         this.props.navigation.navigate('Météo -', {city: this.state.city})
     }
 
+    getRandomImage() {
+        const randomIndex = Math.floor(Math.random() * images.length);
+        return images[randomIndex];
+    }
+
+    componentDidMount() {
+        this.setState({backgroundImage: this.getRandomImage()}); 
+    }
+
     render() {
         return (
-            <View style={style.container}>
+            <ImageBackground source={this.state.backgroundImage} style={style.imageBackground}>
+            <View style={[style.container, style.centeredContainer]}>
                 <TextInput
                 onChangeText={(text) => this.setCity(text)} //Permet l'autorisation de changement de text dans la barre d'input
                 onSubmitEditing={() => this.submit()} 
+                onFocus={() => this.setCity('')}
                 style={style.input}
                 value={this.state.city}
                 />
@@ -34,6 +54,7 @@ class Search extends Component {
                     <Text style={style.buttonText}>Rechercher</Text>
                 </TouchableOpacity>
             </View>
+            </ImageBackground>
         )
     }
 }

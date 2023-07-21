@@ -28,6 +28,7 @@ export default class WeatherRow extends Component {
         const type = this.props.day.weather[0].main.toLowerCase()
         let iconName
         let iconColor
+        let iconStyle = {}
 
     switch(type) {
         case 'clouds':
@@ -37,13 +38,14 @@ export default class WeatherRow extends Component {
         case 'rain':
             iconName = 'tint';
             iconColor = '#073B4C'
+            iconStyle = { marginLeft: 10 }
             break;
         default:
             iconName = 'sun-o';
             iconColor = '#FDEFBC'
     }
 
-    return <Icon name={iconName} size={size} color={iconColor} />;
+    return <Icon name={iconName} size={size} color={iconColor} style={iconStyle} />;
     }
 
     date () {
@@ -55,12 +57,19 @@ export default class WeatherRow extends Component {
 
     render() {
         const dayTemp = this.props.day && this.props.day.main && this.props.day.main.temp;
+        const type = this.props.day.weather[0].main.toLowerCase()
+        let textStyle = {}
+
+        if (type === 'rain') {
+            textStyle = { marginLeft: 35 }
+        }
+
         if (this.props.index === 0) {
             return (
                 <FadeInView >
                     <View style={[style.view, style.flex, style.firstView]}>
-                        <View>
-                            <Text style={{color: '#FFF'}}>{this.day()}{this.date()}</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={{color: '#FFF', marginBottom: 20, ...textStyle}}>{this.day()}{this.date()}</Text>
                             {this.icon(90)}
                         </View>
                     <Text style={[style.temp, {fontSize: 35}]}>{dayTemp ? Math.round(dayTemp) + '°C' : ''}</Text>
@@ -73,9 +82,9 @@ export default class WeatherRow extends Component {
                     <View style={[style.view, style.flex]}>
                         <View style={style.flex}>
                             {this.icon()}
-                            <Text style={{marginLeft: 10}}>{this.day()}{this.date()}</Text>
+                            <Text style={{marginLeft: 20, ...textStyle}}>{this.day()}{this.date()}</Text>
                         </View>
-                    <Text style={style.temp}>{dayTemp ? Math.round(dayTemp) + '°C' : ''}</Text>
+                        <Text style={style.temp}>{dayTemp ? Math.round(dayTemp) + '°C' : ''}</Text>
                     </View>
                 </FadeInView>
             )
@@ -94,13 +103,14 @@ const style = StyleSheet.create({
     flex: {
         flex: 1,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: 20
     },
     firstView: {
-        backgroundColor: '#BC3908'
+        backgroundColor: '#95D9DA'
     },
     view: {
-        backgroundColor: globalStyle.color,
+        backgroundColor: '#F1BF98',
         borderWidth: 0,
         borderBottomWidth: 1,
         borderBottomColor: '#FDEFBC',

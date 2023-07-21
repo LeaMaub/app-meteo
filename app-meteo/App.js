@@ -40,8 +40,8 @@ function MyTabs() {
           headerShown: false
       })}
     >
-      <Tab.Screen name='A propos' component={About}/>
       <Tab.Screen name='Rechercher une ville' component={Search}/>
+      <Tab.Screen name='A propos' component={About}/>
     </Tab.Navigator>
   );
 }
